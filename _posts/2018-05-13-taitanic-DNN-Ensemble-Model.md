@@ -1,6 +1,4 @@
 ---
-layout: post
-date:  5월 13, 2018
 title: DNN Ensemble Model을 사용한 타이타닉 생존자 예측
 categories: kaggle
 author: inoray
@@ -34,6 +32,7 @@ import matplotlib.pyplot as plt
       from ._conv import register_converters as _register_converters
 
  
+
 
 
 
@@ -896,6 +895,7 @@ with tf.variable_scope("case15"):
 
 
 
+
 ## Ensemble Model 학습
 hyper paramers
 - learning_rate: 0.001
@@ -985,6 +985,7 @@ print('Ensemble accuracy: %.2f' % sess.run(ensemble_accuracy))
     Ensemble accuracy: 0.84
 
  
+
 
 
 
