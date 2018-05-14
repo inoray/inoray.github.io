@@ -41,6 +41,7 @@ import matplotlib.pyplot as plt
 
 
 
+
 ## model class 
 
 **In [2]:**
@@ -455,7 +456,7 @@ with tf.variable_scope("case1"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_13_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_13_1.png) 
 
 
      7.15 seconds
@@ -488,7 +489,7 @@ with tf.variable_scope("case2"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_14_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_14_1.png) 
 
 
      11.48 seconds
@@ -521,7 +522,7 @@ with tf.variable_scope("case3"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_15_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_15_1.png) 
 
 
      17.64 seconds
@@ -554,7 +555,7 @@ with tf.variable_scope("case4"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_16_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_16_1.png) 
 
 
      21.88 seconds
@@ -587,7 +588,7 @@ with tf.variable_scope("case5"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_17_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_17_1.png) 
 
 
      27.69 seconds
@@ -620,7 +621,7 @@ with tf.variable_scope("case6"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_18_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_18_1.png) 
 
 
      34.35 seconds
@@ -653,7 +654,7 @@ with tf.variable_scope("case7"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_19_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_19_1.png) 
 
 
      37.19 seconds
@@ -686,7 +687,7 @@ with tf.variable_scope("case8"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_20_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_20_1.png) 
 
 
      42.25 seconds
@@ -719,7 +720,7 @@ with tf.variable_scope("case9"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_21_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_21_1.png) 
 
 
      49.78 seconds
@@ -752,7 +753,7 @@ with tf.variable_scope("case11"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_22_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_22_1.png) 
 
 
      17.09 seconds
@@ -785,7 +786,7 @@ with tf.variable_scope("case12"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_23_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_23_1.png) 
 
 
      26.81 seconds
@@ -818,7 +819,7 @@ with tf.variable_scope("case13"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_24_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_24_1.png) 
 
 
      34.88 seconds
@@ -851,7 +852,7 @@ with tf.variable_scope("case14"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_25_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_25_1.png) 
 
 
      43.67 seconds
@@ -884,13 +885,14 @@ with tf.variable_scope("case15"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_26_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_26_1.png) 
 
 
      50.81 seconds
     avg_acc:  83.39
 
  
+
 
 
 
@@ -952,7 +954,7 @@ with tf.variable_scope("submission_model"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_28_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_28_1.png) 
 
 
 ## 학습 데이터로 성능평가 
@@ -988,6 +990,7 @@ print('Ensemble accuracy: %.2f' % sess.run(ensemble_accuracy))
     Ensemble accuracy: 0.84
 
  
+
 
 
 
