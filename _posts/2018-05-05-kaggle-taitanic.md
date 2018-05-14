@@ -1,11 +1,11 @@
 ---
-layout: post
 categories: kaggle
 title: 캐글 타이타닉 생존자 예측
 author: inoray
 tags: kaggle titanic
-cover: "/assets/2018-05-05-kaggle-taitanic/titanic_cover.jpg"
 ---
+
+
 ## 1. 데이터 분석
 
 아래 강좌를 참조해서 분석
@@ -34,4 +34,4 @@ cover: "/assets/2018-05-05-kaggle-taitanic/titanic_cover.jpg"
 
 ## 3. 결과
 
-![결과](/assets/2018-05-05-kaggle-taitanic/김성헌_타이타닉_DNN_Ensemble.png)
+![결과](/assets/images/2018-05-05-kaggle-taitanic/김성헌_타이타닉_DNN_Ensemble.png)

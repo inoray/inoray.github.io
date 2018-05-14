@@ -7,9 +7,10 @@ tags:
     - notebook
     - kaggle
     - titanic
-cover: "/assets/2018-05-05-kaggle-taitanic/titanic_cover.jpg"
 ---
-# DNN Ensemble Model을 사용한 타이타닉 생존자 예측
+
+![jpg](/assets/images/2018-05-05-kaggle-taitanic/titanic_cover.jpg)
+
 
 - dnn 적용
 - cross validation 으로 최적 hyper parameter 찾기
@@ -32,6 +33,7 @@ import matplotlib.pyplot as plt
       from ._conv import register_converters as _register_converters
 
  
+
 
 
 
@@ -453,7 +455,7 @@ with tf.variable_scope("case1"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_13_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_13_1.png) 
 
 
      7.15 seconds
@@ -486,7 +488,7 @@ with tf.variable_scope("case2"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_14_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_14_1.png) 
 
 
      11.48 seconds
@@ -519,7 +521,7 @@ with tf.variable_scope("case3"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_15_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_15_1.png) 
 
 
      17.64 seconds
@@ -552,7 +554,7 @@ with tf.variable_scope("case4"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_16_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_16_1.png) 
 
 
      21.88 seconds
@@ -585,7 +587,7 @@ with tf.variable_scope("case5"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_17_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_17_1.png) 
 
 
      27.69 seconds
@@ -618,7 +620,7 @@ with tf.variable_scope("case6"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_18_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_18_1.png) 
 
 
      34.35 seconds
@@ -651,7 +653,7 @@ with tf.variable_scope("case7"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_19_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_19_1.png) 
 
 
      37.19 seconds
@@ -684,7 +686,7 @@ with tf.variable_scope("case8"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_20_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_20_1.png) 
 
 
      42.25 seconds
@@ -717,7 +719,7 @@ with tf.variable_scope("case9"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_21_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_21_1.png) 
 
 
      49.78 seconds
@@ -750,7 +752,7 @@ with tf.variable_scope("case11"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_22_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_22_1.png) 
 
 
      17.09 seconds
@@ -783,7 +785,7 @@ with tf.variable_scope("case12"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_23_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_23_1.png) 
 
 
      26.81 seconds
@@ -816,7 +818,7 @@ with tf.variable_scope("case13"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_24_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_24_1.png) 
 
 
      34.88 seconds
@@ -849,7 +851,7 @@ with tf.variable_scope("case14"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_25_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_25_1.png) 
 
 
      43.67 seconds
@@ -882,13 +884,14 @@ with tf.variable_scope("case15"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_26_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_26_1.png) 
 
 
      50.81 seconds
     avg_acc:  83.39
 
  
+
 
 
 
@@ -949,7 +952,7 @@ with tf.variable_scope("submission_model"):
 
 
 
-![png]({{ BASE_PATH }}/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_28_1.png) 
+![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_28_1.png) 
 
 
 ## 학습 데이터로 성능평가 
@@ -985,6 +988,7 @@ print('Ensemble accuracy: %.2f' % sess.run(ensemble_accuracy))
     Ensemble accuracy: 0.84
 
  
+
 
 
 
@@ -1283,6 +1287,6 @@ submission.to_csv('submission.csv', index=False)
 
 ## kaggle 결과!
 
-![결과](/assets/2018-05-05-kaggle-taitanic/김성헌_타이타닉_DNN_Ensemble.png)
+![결과](/assets/images/2018-05-05-kaggle-taitanic/김성헌_타이타닉_DNN_Ensemble.png)
 
  

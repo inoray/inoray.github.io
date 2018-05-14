@@ -1,7 +1,6 @@
 ---
-layout: post
-date:  5월 15, 2018
 categories: 
+    - blog
 title: jupyter notebook 을 블로깅하는 방법
 author: inoray
 ---
