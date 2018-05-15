@@ -3,6 +3,11 @@
 {%- block header -%}
 ---
 title: "{{resources['metadata']['name']}}"
+excerpt: ""
+header:
+    overlay_image: /assets/images/header_image.png
+    overlay_filter: 0.5
+    caption: ""
 categories:
 tags:
     - python

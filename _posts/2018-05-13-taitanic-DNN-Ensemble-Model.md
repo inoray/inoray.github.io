@@ -1,10 +1,10 @@
 ---
 title: "kaggle: 타이타닉 생존자 예측 - DNN Ensemble Model"
-excerpt: "This is a user-defined post excerpt. It should be displayed in place of the post content in archive-index pages."
+excerpt: ""
 header:
     overlay_image: /assets/images/2018-05-05-kaggle-taitanic/titanic_cover.jpg
     overlay_filter: 0.5
-    caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
+    caption: ""
 categories:
     - kaggle
 tags:
