@@ -1,6 +1,6 @@
 ---
 categories: 
-    - blog
+    - jekyll
 title: jupyter notebook 을 블로깅하는 방법
 author: inoray
 ---
