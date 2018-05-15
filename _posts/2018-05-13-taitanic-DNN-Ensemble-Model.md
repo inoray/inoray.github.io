@@ -6,6 +6,7 @@ tags:
     - notebook
     - kaggle
     - titanic
+toc: true
 ---
 
 ![jpg](/assets/images/2018-05-05-kaggle-taitanic/titanic_cover.jpg)
@@ -30,7 +31,7 @@ import matplotlib.pyplot as plt
     /home/shkim/anaconda3/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
       from ._conv import register_converters as _register_converters
 
-## model class 
+## model class
 
 **In [2]:**
 
@@ -169,12 +170,18 @@ def cross_valid (sess, train_x, train_y, foldCount, layers, units, epochs, learn
 
 
 **In [4]:**
-
 {% highlight python %}
 train = pd.read_csv('train_preprocessed.csv')
 train.head()
 {% endhighlight %}
 
+
+| Employee         | Salary |                                                              |
+| --------         | ------ | ------------------------------------------------------------ |
+| [John Doe](#)    | $1     | Because that's all Steve Jobs needed for a salary.           |
+| [Jane Doe](#)    | $100K  | For all the blogging she does.                               |
+| [Fred Bloggs](#) | $100M  | Pictures are worth a thousand words, right? So Jane × 1,000. |
+| [Jane Bloggs](#) | $100B  | With hair like that?! Enough said.  
 
 
 

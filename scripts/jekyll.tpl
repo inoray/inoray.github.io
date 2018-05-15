@@ -2,14 +2,11 @@
 
 {%- block header -%}
 ---
-layout: post
-categories: 
 title: "{{resources['metadata']['name']}}"
-author: inoray
+categories:
 tags:
     - python
     - notebook
-cover: "/assets/header_image.png"
 ---
 {%- endblock header -%}
 
@@ -18,7 +15,7 @@ cover: "/assets/header_image.png"
 {% endblock in_prompt %}
 
 {% block input %}
-{{ '{% highlight python %}' }}
+{{ '{% highlight python linenos %}' }}
 {{ cell.source }}
 {{ '{% endhighlight %}' }}
 {% endblock input %}
