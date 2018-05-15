@@ -14,6 +14,7 @@ tags:
 toc: true
 ---
 
+
 # 개요
 - dnn 적용
 - cross validation 으로 최적 hyper parameter 찾기
