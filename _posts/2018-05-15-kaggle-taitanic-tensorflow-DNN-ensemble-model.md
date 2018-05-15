@@ -167,9 +167,9 @@ def cross_valid (sess, train_x, train_y, foldCount, layers, units, epochs, learn
 {% endhighlight %}
  
 ## 학습데이터 읽어 오기
-학습데이터는 아래의 코드로 전처리된 것을 사용한다.
+학습데이터는 이전 포스트에서 feature engineering 된 것을 사용한다.
 
-[타이타닉 데이터분석](./김성헌_타이타닉_데이터분석.ipynb)
+[타이타닉 데이터분석](/_posts/2018-05-15-kaggle-taitanic-feature-engineering.md)
  
 
 **In [4]:**
@@ -1264,4 +1264,4 @@ submission.to_csv('submission.csv', index=False)
  
 ## kaggle 결과!
 
-![결과](/assets/images/2018-05-05-kaggle-taitanic/김성헌_타이타닉_DNN_Ensemble.png)
+![결과](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/김성헌_타이타닉_DNN_Ensemble.png)
