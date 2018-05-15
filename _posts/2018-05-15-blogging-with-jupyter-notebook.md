@@ -1,6 +1,14 @@
 ---
 title: jupyter notebook 을 블로깅하는 방법
+excerpt: ""
+header:
+    overlay_image: /assets/images/overlay_image/code_01.jpg
+    overlay_filter: 0.5
+    caption: ""
 categories: jekyll
+tags:
+    - jekyll
+    - jupyter
 ---
 
 reference
