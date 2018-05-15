@@ -1,10 +1,8 @@
 ---
-categories: kaggle
 title: 캐글 타이타닉 생존자 예측
-author: inoray
+categories: kaggle
 tags: kaggle titanic
 ---
-
 
 ## 1. 데이터 분석
 
@@ -13,8 +11,6 @@ tags: kaggle titanic
 - [허민석님 유투브 강좌](https://www.youtube.com/watch?v=aqp_9HV58Ls)
 
 [구현 소스](https://github.com/inoray/ML_DL_Tensorflow_study/tree/master/season_02_Kaggle/01_Titanic_Machine_Learning_from_Disaster/김성헌/김성헌_타이타닉_데이터분석.ipynb) 참조.
-
-
 
 ## 2. Modeling
 
@@ -29,8 +25,6 @@ tags: kaggle titanic
   - ensemble models: 10
 
 [구현 소스](https://github.com/inoray/ML_DL_Tensorflow_study/tree/master/season_02_Kaggle/01_Titanic_Machine_Learning_from_Disaster/김성헌/김성헌_타이타닉_DNN_Ensemble.ipynb) 참조.
-
-
 
 ## 3. 결과
 
