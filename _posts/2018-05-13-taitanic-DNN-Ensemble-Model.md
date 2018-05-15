@@ -10,16 +10,15 @@ tags:
 
 ![jpg](/assets/images/2018-05-05-kaggle-taitanic/titanic_cover.jpg)
 
-
 - dnn 적용
 - cross validation 으로 최적 hyper parameter 찾기
     - epoch, layers, units 등
 - ensemble 적용
-    - 최종 hyper parameter 기반으로 ensemble 구성 
+    - 최종 hyper parameter 기반으로 ensemble 구성
 
 **In [1]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 import pandas as pd
 import tensorflow as tf
 import numpy as np
@@ -30,16 +29,6 @@ import matplotlib.pyplot as plt
 
     /home/shkim/anaconda3/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
       from ._conv import register_converters as _register_converters
-
- 
-
-
-
-
-
-
-
-
 
 ## model class 
 
