@@ -1,6 +1,11 @@
 ---
-title: "kaggle: DNN Ensemble Model을 사용한 타이타닉 생존자 예측"
-categories: kaggle
+title: "kaggle: 타이타닉 생존자 예측 - DNN Ensemble Model"
+header:
+    overlay_image: /assets/images/2018-05-05-kaggle-taitanic/titanic_cover.jpg
+    overlay_filter: 0.5
+    caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
+categories:
+    - kaggle
 tags:
     - python
     - notebook
