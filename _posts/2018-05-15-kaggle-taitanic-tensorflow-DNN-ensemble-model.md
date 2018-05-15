@@ -169,7 +169,7 @@ def cross_valid (sess, train_x, train_y, foldCount, layers, units, epochs, learn
 ## 학습데이터 읽어 오기
 학습데이터는 이전 포스트에서 feature engineering 된 것을 사용한다.
 
-[타이타닉 데이터분석](/_posts/2018-05-15-kaggle-taitanic-feature-engineering.md)
+[타이타닉 데이터분석]({{ site.baseurl }}{% post_url 2018-05-15-kaggle-taitanic-feature-engineering %})
  
 
 **In [4]:**
