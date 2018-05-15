@@ -165,9 +165,8 @@ def cross_valid (sess, train_x, train_y, foldCount, layers, units, epochs, learn
 
 ## 학습데이터 읽어 오기
 학습데이터는 아래의 코드로 전처리된 것을 사용한다.
-
-[타이타닉 데이터분석](./김성헌_타이타닉_데이터분석.ipynb)
-
+: 들여쓰기
+: [타이타닉 데이터분석](./김성헌_타이타닉_데이터분석.ipynb)
 
 **In [4]:**
 {% highlight python %}
