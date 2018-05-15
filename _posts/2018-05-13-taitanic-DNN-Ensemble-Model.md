@@ -1,5 +1,5 @@
 ---
-title: kaggle: DNN Ensemble Model을 사용한 타이타닉 생존자 예측
+title: "kaggle: DNN Ensemble Model을 사용한 타이타닉 생존자 예측"
 categories: kaggle
 tags:
     - python
