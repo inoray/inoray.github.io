@@ -14,8 +14,6 @@ tags:
 toc: true
 ---
 
-![jpg](/assets/images/2018-05-05-kaggle-taitanic/titanic_cover.jpg)
-
 - dnn 적용
 - cross validation 으로 최적 hyper parameter 찾기
     - epoch, layers, units 등
