@@ -12,6 +12,7 @@ categories:
 tags:
     - python
     - notebook
+toc: true
 ---
 {%- endblock header -%}
 

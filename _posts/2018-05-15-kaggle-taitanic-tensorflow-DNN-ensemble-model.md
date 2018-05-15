@@ -1,8 +1,8 @@
 ---
-title: "kaggle: 타이타닉 생존자 예측 - DNN Ensemble Model"
+title: "kaggle: 타이타닉 생존자 예측 - tensorflow DNN Ensemble Model"
 excerpt: ""
 header:
-    overlay_image: /assets/images/2018-05-05-kaggle-taitanic/titanic_cover.jpg
+    overlay_image: /assets/images/2018-05-15-kaggle-taitanic-feature-engineering/titanic_cover.jpg
     overlay_filter: 0.5
     caption: ""
 categories:
@@ -16,11 +16,12 @@ toc: true
 ---
 
 # 개요
+- tensorflow
 - dnn 적용
 - cross validation 으로 최적 hyper parameter 찾기
     - epoch, layers, units 등
 - ensemble 적용
-    - 최종 hyper parameter 기반으로 ensemble 구성
+    - 최종 hyper parameter 기반으로 ensemble 구성 
 
 **In [1]:**
 
@@ -32,27 +33,24 @@ from sklearn.model_selection import KFold
 import time
 import matplotlib.pyplot as plt
 {% endhighlight %}
-
-    /home/shkim/anaconda3/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
-      from ._conv import register_converters as _register_converters
-
-## model class
+ 
+## model class 
 
 **In [2]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 class Model:
 
     def __init__(self, sess, name):
         self.sess = sess
         self.name = name
-    
+
     def build_net(self, features=8, layers=4, units=100, bn=False):
         with tf.variable_scope(self.name) as scope:
             # dropout (keep_prob) rate  0.7~0.5 on training, but should be 1
             # for testing
             self.training = tf.placeholder(tf.bool)
-    
+
             # input place holders
             self.X = tf.placeholder(tf.float32, [None, features])
             self.Y = tf.placeholder(tf.float32, [None, 1])
@@ -76,12 +74,12 @@ class Model:
                 self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(self.cost)
         else:
             self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(self.cost)
-    
+
         self.prediction = tf.round(tf.nn.sigmoid(self.logits))
         correct_prediction = tf.equal(self.prediction, self.Y)
         self.correct_count = tf.reduce_sum(tf.cast(correct_prediction, tf.float32))
         self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-    
+
     def dense (self, x, size, scope):
         return tf.contrib.layers.fully_connected(x, size, activation_fn=None, scope=scope)
     
@@ -100,50 +98,50 @@ class Model:
     
     def predict(self, x_test, training=False):
         return self.sess.run(self.prediction, feed_dict={self.X: x_test, self.training: training})
-    
+
     def get_accuracy(self, x_test, y_test, training=False):
         return self.sess.run(self.accuracy, feed_dict={self.X: x_test, self.Y: y_test, self.training: training})
     
     def train(self, x_data, y_data, learning_rate, training=True):
         return self.sess.run([self.cost, self.optimizer], feed_dict={self.X: x_data, self.Y: y_data, self.learning_rate: learning_rate, self.training: training})
 {% endhighlight %}
-
+ 
 ## cross validation 함수 
 
 **In [3]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 def cross_valid (sess, train_x, train_y, foldCount, layers, units, epochs, learning_rate):
     
     fig = plt.figure(figsize=(18, 6))
     
     k_fold = KFold(foldCount)
-    
+
     models_v = []
     for m in range(foldCount):
         models_v.append(Model(sess, "model_v" + str(m)))
         models_v[m].build_net(features=train_x.shape[1], layers=layers, units=units, bn=False)
-    
+
     sess.run(tf.global_variables_initializer())
-    
+
     start_time = time.time()
-    
+
     valid_acc = []
     idx = 0;
     for train_indices, valid_indices in k_fold.split(train_x):
         #print('Train: %s \n| test: %s\n' % (train_indices, test_indices))
         train_acc_collect = []
         valid_acc_collect = []
-    
+
         m = models_v[idx]
-    
+
         start_time_k = time.time()
-    
+
         X_train = train_x.iloc[train_indices].values
         Y_train = train_y.iloc[train_indices].values.reshape([-1,1])
         X_valid = train_x.iloc[valid_indices].values
         Y_valid = train_y.iloc[valid_indices].values.reshape([-1,1])
-    
+
         fig.add_subplot(foldCount / 5, 5, idx+1)
         
         for i in range(epochs):
@@ -152,40 +150,35 @@ def cross_valid (sess, train_x, train_y, foldCount, layers, units, epochs, learn
             accuracy_v = m.get_accuracy(X_valid, Y_valid)
             train_acc_collect.append(accuracy_t)
             valid_acc_collect.append(accuracy_v)
-    
+
         accuracy = m.get_accuracy(X_valid, Y_valid)
         print("[", idx, "] accuracy=%.2f" % accuracy, " %.2f seconds" % (time.time() - start_time_k))
         valid_acc.append(accuracy)
-    
+
         plt.plot(train_acc_collect, "r")
         plt.plot(valid_acc_collect, "g")
         plt.ylim(0, 1)
-    
+
         idx = idx + 1
     
     plt.show()
     print(" %.2f seconds" % (time.time() - start_time))
     return valid_acc, round(np.mean(valid_acc) * 100, 2)
 {% endhighlight %}
-
+ 
 ## 학습데이터 읽어 오기
 학습데이터는 아래의 코드로 전처리된 것을 사용한다.
-: 들여쓰기
-: [타이타닉 데이터분석](./김성헌_타이타닉_데이터분석.ipynb)
+
+[타이타닉 데이터분석](./김성헌_타이타닉_데이터분석.ipynb)
+ 
 
 **In [4]:**
-{% highlight python %}
+
+{% highlight python linenos %}
 train = pd.read_csv('train_preprocessed.csv')
 train.head()
 {% endhighlight %}
 
-
-| Employee         | Salary |                                                              |
-| --------         | ------ | ------------------------------------------------------------ |
-| [John Doe](#)    | $1     | Because that's all Steve Jobs needed for a salary.           |
-| [Jane Doe](#)    | $100K  | For all the blogging she does.                               |
-| [Fred Bloggs](#) | $100M  | Pictures are worth a thousand words, right? So Jane × 1,000. |
-| [Jane Bloggs](#) | $100B  | With hair like that?! Enough said.  
 
 
 
@@ -198,7 +191,7 @@ train.head()
     .dataframe tbody tr th {
         vertical-align: top;
     }
-    
+
     .dataframe thead th {
         text-align: right;
     }
@@ -287,14 +280,14 @@ train.head()
 
 **In [5]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 train_y = train['Survived']
 train_x = train.drop('Survived', axis=1)
 {% endhighlight %}
 
 **In [6]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 train_y.head()
 {% endhighlight %}
 
@@ -312,7 +305,7 @@ train_y.head()
 
 **In [7]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 type(train_y)
 {% endhighlight %}
 
@@ -325,7 +318,7 @@ type(train_y)
 
 **In [8]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 train_x.head()
 {% endhighlight %}
 
@@ -341,7 +334,7 @@ train_x.head()
     .dataframe tbody tr th {
         vertical-align: top;
     }
-    
+
     .dataframe thead th {
         text-align: right;
     }
@@ -421,12 +414,12 @@ train_x.head()
 </div>
 
 
-
+ 
 ## cross validation 으로 hyper parameter 결정 
 
 **In [9]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 
 with tf.variable_scope("case1"):
@@ -455,7 +448,7 @@ with tf.variable_scope("case1"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_13_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_13_1.png)
 
 
      7.15 seconds
@@ -464,7 +457,7 @@ with tf.variable_scope("case1"):
 
 **In [10]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case2"):
     # hyper parameters
     learning_rate = 0.001
@@ -488,7 +481,7 @@ with tf.variable_scope("case2"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_14_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_14_1.png)
 
 
      11.48 seconds
@@ -497,7 +490,7 @@ with tf.variable_scope("case2"):
 
 **In [11]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case3"):
     # hyper parameters
     learning_rate = 0.001
@@ -521,7 +514,7 @@ with tf.variable_scope("case3"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_15_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_15_1.png)
 
 
      17.64 seconds
@@ -530,7 +523,7 @@ with tf.variable_scope("case3"):
 
 **In [12]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case4"):
     # hyper parameters
     learning_rate = 0.001
@@ -554,7 +547,7 @@ with tf.variable_scope("case4"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_16_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_16_1.png)
 
 
      21.88 seconds
@@ -563,7 +556,7 @@ with tf.variable_scope("case4"):
 
 **In [13]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case5"):
     # hyper parameters
     learning_rate = 0.001
@@ -587,7 +580,7 @@ with tf.variable_scope("case5"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_17_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_17_1.png)
 
 
      27.69 seconds
@@ -596,7 +589,7 @@ with tf.variable_scope("case5"):
 
 **In [14]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case6"):
     # hyper parameters
     learning_rate = 0.001
@@ -620,7 +613,7 @@ with tf.variable_scope("case6"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_18_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_18_1.png)
 
 
      34.35 seconds
@@ -629,7 +622,7 @@ with tf.variable_scope("case6"):
 
 **In [15]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case7"):
     # hyper parameters
     learning_rate = 0.001
@@ -653,7 +646,7 @@ with tf.variable_scope("case7"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_19_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_19_1.png)
 
 
      37.19 seconds
@@ -662,7 +655,7 @@ with tf.variable_scope("case7"):
 
 **In [16]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case8"):
     # hyper parameters
     learning_rate = 0.001
@@ -686,7 +679,7 @@ with tf.variable_scope("case8"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_20_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_20_1.png)
 
 
      42.25 seconds
@@ -695,7 +688,7 @@ with tf.variable_scope("case8"):
 
 **In [17]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case9"):
     # hyper parameters
     learning_rate = 0.001
@@ -719,7 +712,7 @@ with tf.variable_scope("case9"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_21_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_21_1.png)
 
 
      49.78 seconds
@@ -728,7 +721,7 @@ with tf.variable_scope("case9"):
 
 **In [18]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case11"):
     # hyper parameters
     learning_rate = 0.001
@@ -752,7 +745,7 @@ with tf.variable_scope("case11"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_22_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_22_1.png)
 
 
      17.09 seconds
@@ -761,7 +754,7 @@ with tf.variable_scope("case11"):
 
 **In [19]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case12"):
     # hyper parameters
     learning_rate = 0.001
@@ -785,7 +778,7 @@ with tf.variable_scope("case12"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_23_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_23_1.png)
 
 
      26.81 seconds
@@ -794,7 +787,7 @@ with tf.variable_scope("case12"):
 
 **In [20]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case13"):
     # hyper parameters
     learning_rate = 0.001
@@ -818,7 +811,7 @@ with tf.variable_scope("case13"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_24_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_24_1.png)
 
 
      34.88 seconds
@@ -827,7 +820,7 @@ with tf.variable_scope("case13"):
 
 **In [21]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case14"):
     # hyper parameters
     learning_rate = 0.001
@@ -851,7 +844,7 @@ with tf.variable_scope("case14"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_25_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_25_1.png)
 
 
      43.67 seconds
@@ -860,7 +853,7 @@ with tf.variable_scope("case14"):
 
 **In [22]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("case15"):
     # hyper parameters
     learning_rate = 0.001
@@ -884,22 +877,13 @@ with tf.variable_scope("case15"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_26_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_26_1.png)
 
 
      50.81 seconds
     avg_acc:  83.39
 
  
-
-
-
-
-
-
-
-
-
 ## Ensemble Model 학습
 hyper paramers
 - learning_rate: 0.001
@@ -911,7 +895,7 @@ hyper paramers
 
 **In [23]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 with tf.variable_scope("submission_model"):
     learning_rate = 0.001
     training_epochs = 200
@@ -924,7 +908,7 @@ with tf.variable_scope("submission_model"):
         model = Model(sess, "model" + str(i))
         model.build_net(features=train_x.shape[1], layers=layers, units=units, bn=False)
         models.append(model)
-    
+
     sess.run(tf.global_variables_initializer())
     
     print('Learning Started!')
@@ -953,14 +937,14 @@ with tf.variable_scope("submission_model"):
 
 
 
-![png](/assets/images/2018-05-13-taitanic_2/2018-05-13-taitanic_2_28_1.png) 
+![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_28_1.png)
 
-
+ 
 ## 학습 데이터로 성능평가 
 
 **In [24]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 predictions = np.zeros([train_x.shape[0],1])
 
 for m_idx, m in enumerate(models):
@@ -989,20 +973,11 @@ print('Ensemble accuracy: %.2f' % sess.run(ensemble_accuracy))
     Ensemble accuracy: 0.84
 
  
-
-
-
-
-
-
-
-
-
 ## 테스트 데이터로 prediction 
 
 **In [25]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 test = pd.read_csv("test_preprocessed.csv")
 test.head()
 {% endhighlight %}
@@ -1019,7 +994,7 @@ test.head()
     .dataframe tbody tr th {
         vertical-align: top;
     }
-    
+
     .dataframe thead th {
         text-align: right;
     }
@@ -1108,7 +1083,7 @@ test.head()
 
 **In [26]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 test_x = test.drop("PassengerId", axis=1)
 test_x.head()
 {% endhighlight %}
@@ -1125,7 +1100,7 @@ test_x.head()
     .dataframe tbody tr th {
         vertical-align: top;
     }
-    
+
     .dataframe thead th {
         text-align: right;
     }
@@ -1208,7 +1183,7 @@ test_x.head()
 
 **In [27]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 test_predictions = np.zeros([test_x.shape[0],1])
 
 for m_idx, m in enumerate(models):
@@ -1236,7 +1211,7 @@ submission.head()
     .dataframe tbody tr th {
         vertical-align: top;
     }
-    
+
     .dataframe thead th {
         text-align: right;
     }
@@ -1283,12 +1258,10 @@ submission.head()
 
 **In [28]:**
 
-{% highlight python %}
+{% highlight python linenos %}
 submission.to_csv('submission.csv', index=False)
 {% endhighlight %}
-
+ 
 ## kaggle 결과!
 
 ![결과](/assets/images/2018-05-05-kaggle-taitanic/김성헌_타이타닉_DNN_Ensemble.png)
-
- 

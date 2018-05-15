@@ -19,7 +19,7 @@ locale                   : "ko-KR"
 title                    : "INORAY"
 title_separator          : "-"
 name                     : "INORAY"
-description              : "개발관련 자료를 정리하는 블로그 입니다."
+description              : "개발관련 자료를 정리하는 블로그입니다."
 url                      : "https://inoray.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "inoray/inoray" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -100,7 +100,7 @@ analytics:
 author:
   name             : "INORAY"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an amazing person."
+  bio              : "software engineer (OCR, Document Recognition)"
   location         : "Seoul,Korea"
   email            : "sunghunk@gmail.com"
   uri              :
