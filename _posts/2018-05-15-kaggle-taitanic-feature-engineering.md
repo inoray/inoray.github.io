@@ -13,13 +13,14 @@ tags:
     - kaggle
     - titanic
 toc: true
+classes: wide
 ---
 
 # 캐글 타이타닉 생존자 예측 데이터 분석
 reference:
 https://github.com/minsuk-heo/kaggle-titanic/blob/master/titanic-solution.ipynb
- 
-### 데이터는 pandas를 사용해서 분석하자. 
+
+### 데이터는 pandas를 사용해서 분석하자.
 
 **In [1]:**
 
@@ -33,8 +34,8 @@ import pandas as pd
 # 데이터 파일 경로
 dataPath = "../data"
 {% endhighlight %}
- 
-### pandas로 데이터를 읽어오자. 
+
+### pandas로 데이터를 읽어오자.
 
 **In [3]:**
 
@@ -42,9 +43,9 @@ dataPath = "../data"
 train = pd.read_csv(dataPath + "/train.csv")
 test = pd.read_csv(dataPath + "/test.csv")
 {% endhighlight %}
- 
+
 ### 학습데이터의 내용 확인
-head를 사용하면 데이터 상위 5줄만 보여준다. 
+head를 사용하면 데이터 상위 5줄만 보여준다.
 
 **In [4]:**
 
@@ -168,7 +169,7 @@ train.head()
 </div>
 
 
- 
+
 ### Data Dictionary
 - Survived: 0 = No, 1 = Yes
 - pclass: Ticket class 1 = 1st, 2 = 2nd, 3 = 3rd
@@ -178,7 +179,7 @@ train.head()
 - Fare: 여객운임
 - cabin: Cabin number
 - embarked: Port of Embarkation C = Cherbourg, Q = Queenstown, S = Southampton
-(탑승한 항구) 
+(탑승한 항구)
 
 **In [5]:**
 
@@ -296,8 +297,8 @@ test.head()
 </div>
 
 
- 
-### 데이터의 row 확인 
+
+### 데이터의 row 확인
 
 **In [6]:**
 
@@ -324,9 +325,9 @@ test.shape
     (418, 11)
 
 
- 
+
 ### 데이터 정보 확인
-학습데이터에서는 missing data가 age, cabin, embarked 컬럼에 존재 
+학습데이터에서는 missing data가 age, cabin, embarked 컬럼에 존재
 
 **In [8]:**
 
@@ -352,8 +353,8 @@ train.info()
     dtypes: float64(2), int64(5), object(5)
     memory usage: 83.6+ KB
 
- 
-테스트 데이터에서도 missing data가 Age, Fare, Cabin 컬럼에 존재 
+
+테스트 데이터에서도 missing data가 Age, Fare, Cabin 컬럼에 존재
 
 **In [9]:**
 
@@ -378,8 +379,8 @@ test.info()
     dtypes: float64(2), int64(4), object(5)
     memory usage: 36.0+ KB
 
- 
-### missing data를 좀더 확인하자 
+
+### missing data를 좀더 확인하자
 
 **In [10]:**
 
@@ -669,8 +670,8 @@ test.isnull().sum()
     dtype: int64
 
 
- 
-### visualization 
+
+### visualization
 
 **In [14]:**
 
@@ -679,8 +680,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set() # setting seaborn default for plots
 {% endhighlight %}
- 
-각 특징 별로 생존정보를 그려주는 함수를 만들고 특징 별 생존정보 확인하자 
+
+각 특징 별로 생존정보를 그려주는 함수를 만들고 특징 별 생존정보 확인하자
 
 **In [15]:**
 
@@ -702,8 +703,8 @@ bar_chart('Sex')
 
 ![png](/assets/images/2018-05-15-kaggle-taitanic-feature-engineering/2018-05-15-kaggle-taitanic-feature-engineering_26_0.png)
 
- 
-남자가 여자보다 많이 사망..... 
+
+남자가 여자보다 많이 사망.....
 
 **In [17]:**
 
@@ -714,8 +715,8 @@ bar_chart('Pclass')
 
 ![png](/assets/images/2018-05-15-kaggle-taitanic-feature-engineering/2018-05-15-kaggle-taitanic-feature-engineering_28_0.png)
 
- 
-3등급칸의 사망 비율이 높다. 
+
+3등급칸의 사망 비율이 높다.
 
 **In [18]:**
 
@@ -726,8 +727,8 @@ bar_chart('SibSp')
 
 ![png](/assets/images/2018-05-15-kaggle-taitanic-feature-engineering/2018-05-15-kaggle-taitanic-feature-engineering_30_0.png)
 
- 
-형재자매/배우자 없이 혼자 탐승했던 사람의 사망율이 높다. 
+
+형재자매/배우자 없이 혼자 탐승했던 사람의 사망율이 높다.
 
 **In [19]:**
 
@@ -738,8 +739,8 @@ bar_chart('Parch')
 
 ![png](/assets/images/2018-05-15-kaggle-taitanic-feature-engineering/2018-05-15-kaggle-taitanic-feature-engineering_32_0.png)
 
- 
-부모/자녀 없이 혼자 탑승했던 사람의 사망률이 높다. 
+
+부모/자녀 없이 혼자 탑승했던 사람의 사망률이 높다.
 
 **In [20]:**
 
@@ -750,15 +751,15 @@ bar_chart('Embarked')
 
 ![png](/assets/images/2018-05-15-kaggle-taitanic-feature-engineering/2018-05-15-kaggle-taitanic-feature-engineering_34_0.png)
 
- 
-S 항구에서 탑생한 사람의 사망률이 높다. 
- 
-## Feature engineering 
- 
-모든 문자는 숫자로 만들자. 
- 
+
+S 항구에서 탑생한 사람의 사망률이 높다.
+
+## Feature engineering
+
+모든 문자는 숫자로 만들자.
+
 ### 이름
-이름에서 타이틀을 분리하자... 여자, 남자, 기혼, 미혼 등이 생존과 관련성이 높을 수 있다. 
+이름에서 타이틀을 분리하자... 여자, 남자, 기혼, 미혼 등이 생존과 관련성이 높을 수 있다.
 
 **In [21]:**
 
@@ -1112,8 +1113,8 @@ bar_chart('Title')
 
 ![png](/assets/images/2018-05-15-kaggle-taitanic-feature-engineering/2018-05-15-kaggle-taitanic-feature-engineering_47_0.png)
 
- 
-이제 이름 정보를 필요없으니 제거하자 
+
+이제 이름 정보를 필요없으니 제거하자
 
 **In [30]:**
 
@@ -1244,9 +1245,9 @@ train.head()
 </div>
 
 
- 
+
 ### Sex
-남자는 0, 여자는 1로 수정하자 
+남자는 0, 여자는 1로 수정하자
 
 **In [32]:**
 
@@ -1378,10 +1379,10 @@ train.head()
 </div>
 
 
- 
+
 ### Age
 missing data가 있다.
-missing data는 통계정보를 바탕으로 채워주자. 
+missing data는 통계정보를 바탕으로 채워주자.
 
 **In [34]:**
 
@@ -1593,8 +1594,8 @@ bar_chart('Age')
 
 ![png](/assets/images/2018-05-15-kaggle-taitanic-feature-engineering/2018-05-15-kaggle-taitanic-feature-engineering_61_0.png)
 
- 
-### Embarked 
+
+### Embarked
 
 **In [41]:**
 
@@ -1917,8 +1918,8 @@ train.head()
 </div>
 
 
- 
-### Fare 
+
+### Fare
 
 **In [50]:**
 
@@ -1934,7 +1935,7 @@ facet = sns.FacetGrid(train, hue="Survived",aspect=4)
 facet.map(sns.kdeplot,'Fare',shade= True)
 facet.set(xlim=(0, train['Fare'].max()))
 facet.add_legend()
- 
+
 plt.show()
 {% endhighlight %}
 
@@ -2074,8 +2075,8 @@ train.head()
 </div>
 
 
- 
-### cabin 
+
+### cabin
 
 **In [54]:**
 
@@ -2195,8 +2196,8 @@ for dataset in train_test_data:
 train["Cabin"].fillna(train.groupby("Pclass")["Cabin"].transform("median"), inplace=True)
 test["Cabin"].fillna(test.groupby("Pclass")["Cabin"].transform("median"), inplace=True)
 {% endhighlight %}
- 
-### FamilySize 
+
+### FamilySize
 
 **In [59]:**
 
@@ -2412,8 +2413,8 @@ train_data.head(10)
 </div>
 
 
- 
-## Modelling 
+
+## Modelling
 
 **In [65]:**
 
@@ -2449,8 +2450,8 @@ train.info()
     dtypes: float64(4), int64(5)
     memory usage: 62.7 KB
 
- 
-### Cross Validation 
+
+### Cross Validation
 
 **In [67]:**
 
@@ -2459,8 +2460,8 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 k_fold = KFold(n_splits=10, shuffle=True, random_state=0)
 {% endhighlight %}
- 
-##### kNN 
+
+##### kNN
 
 **In [68]:**
 
@@ -2491,8 +2492,8 @@ round(np.mean(score)*100, 2)
     82.6
 
 
- 
-##### Decision Tree 
+
+##### Decision Tree
 
 **In [70]:**
 
@@ -2520,8 +2521,8 @@ round(np.mean(score)*100, 2)
     79.8
 
 
- 
-##### Random Forest 
+
+##### Random Forest
 
 **In [72]:**
 
@@ -2549,8 +2550,8 @@ round(np.mean(score)*100, 2)
     80.92
 
 
- 
-##### Naive Bayes 
+
+##### Naive Bayes
 
 **In [74]:**
 
@@ -2578,8 +2579,8 @@ round(np.mean(score)*100, 2)
     78.78
 
 
- 
-##### SVM 
+
+##### SVM
 
 **In [76]:**
 
@@ -2606,8 +2607,8 @@ round(np.mean(score)*100,2)
     83.5
 
 
- 
-### Testing 
+
+### Testing
 
 **In [78]:**
 
