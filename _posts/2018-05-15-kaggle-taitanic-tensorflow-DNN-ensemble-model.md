@@ -13,6 +13,7 @@ tags:
     - kaggle
     - titanic
 toc: true
+classes: wide
 ---
 
 # 개요
@@ -21,7 +22,7 @@ toc: true
 - cross validation 으로 최적 hyper parameter 찾기
     - epoch, layers, units 등
 - ensemble 적용
-    - 최종 hyper parameter 기반으로 ensemble 구성 
+    - 최종 hyper parameter 기반으로 ensemble 구성
 
 **In [1]:**
 
@@ -33,8 +34,8 @@ from sklearn.model_selection import KFold
 import time
 import matplotlib.pyplot as plt
 {% endhighlight %}
- 
-## model class 
+
+## model class
 
 **In [2]:**
 
@@ -55,19 +56,19 @@ class Model:
             self.X = tf.placeholder(tf.float32, [None, features])
             self.Y = tf.placeholder(tf.float32, [None, 1])
             self.learning_rate = tf.placeholder(tf.float32)
-            
+
             hiddenLayer = self.X
             for i in range(layers):
                 if bn == True:
                     hiddenLayer = self.dense_batch_relu (hiddenLayer, units, 'layer'+str(i))
                 else:
                     hiddenLayer = self.dense_relu_dropout (hiddenLayer, units, 'layer'+str(i))
-                
+
             self.logits = tf.layers.dense(inputs=hiddenLayer, units=1)
-        
+
         # define cost/loss & optimizer
         self.cost = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=self.logits, labels=self.Y))
-        
+
         if bn == True:
             update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
             with tf.control_dependencies(update_ops):
@@ -82,39 +83,39 @@ class Model:
 
     def dense (self, x, size, scope):
         return tf.contrib.layers.fully_connected(x, size, activation_fn=None, scope=scope)
-    
+
     def dense_batch_relu(self, x, size, scope):
         with tf.variable_scope(scope):
             h1 = tf.contrib.layers.fully_connected(x, size, activation_fn=None)
             h2 = tf.contrib.layers.batch_norm(h1, center=True, scale=True, is_training=self.training)
             return tf.nn.relu(h2)
-        
+
     def dense_relu_dropout(self, x, size, scope):
         with tf.variable_scope(scope):
             initializer = tf.contrib.layers.xavier_initializer()
             hiddenLayer = tf.layers.dense(inputs=x, units=size, activation=tf.nn.relu, kernel_initializer=initializer)
             hiddenLayer = tf.layers.dropout(inputs=hiddenLayer, rate=0.5, training=self.training)
             return hiddenLayer
-    
+
     def predict(self, x_test, training=False):
         return self.sess.run(self.prediction, feed_dict={self.X: x_test, self.training: training})
 
     def get_accuracy(self, x_test, y_test, training=False):
         return self.sess.run(self.accuracy, feed_dict={self.X: x_test, self.Y: y_test, self.training: training})
-    
+
     def train(self, x_data, y_data, learning_rate, training=True):
         return self.sess.run([self.cost, self.optimizer], feed_dict={self.X: x_data, self.Y: y_data, self.learning_rate: learning_rate, self.training: training})
 {% endhighlight %}
- 
-## cross validation 함수 
+
+## cross validation 함수
 
 **In [3]:**
 
 {% highlight python linenos %}
 def cross_valid (sess, train_x, train_y, foldCount, layers, units, epochs, learning_rate):
-    
+
     fig = plt.figure(figsize=(18, 6))
-    
+
     k_fold = KFold(foldCount)
 
     models_v = []
@@ -143,7 +144,7 @@ def cross_valid (sess, train_x, train_y, foldCount, layers, units, epochs, learn
         Y_valid = train_y.iloc[valid_indices].values.reshape([-1,1])
 
         fig.add_subplot(foldCount / 5, 5, idx+1)
-        
+
         for i in range(epochs):
             c, _ = m.train(X_train, Y_train, learning_rate)
             accuracy_t = m.get_accuracy(X_train, Y_train)
@@ -160,17 +161,17 @@ def cross_valid (sess, train_x, train_y, foldCount, layers, units, epochs, learn
         plt.ylim(0, 1)
 
         idx = idx + 1
-    
+
     plt.show()
     print(" %.2f seconds" % (time.time() - start_time))
     return valid_acc, round(np.mean(valid_acc) * 100, 2)
 {% endhighlight %}
- 
+
 ## 학습데이터 읽어 오기
 학습데이터는 이전 포스트에서 feature engineering 된 것을 사용한다.
 
 [타이타닉 데이터분석]({{ site.baseurl }}{% post_url 2018-05-15-kaggle-taitanic-feature-engineering %})
- 
+
 
 **In [4]:**
 
@@ -414,8 +415,8 @@ train_x.head()
 </div>
 
 
- 
-## cross validation 으로 hyper parameter 결정 
+
+## cross validation 으로 hyper parameter 결정
 
 **In [9]:**
 
@@ -883,7 +884,7 @@ with tf.variable_scope("case15"):
      50.81 seconds
     avg_acc:  83.39
 
- 
+
 ## Ensemble Model 학습
 hyper paramers
 - learning_rate: 0.001
@@ -891,7 +892,7 @@ hyper paramers
 - layers: 3
 - units:100
 
-- ensemble models: 10 
+- ensemble models: 10
 
 **In [23]:**
 
@@ -910,25 +911,25 @@ with tf.variable_scope("submission_model"):
         models.append(model)
 
     sess.run(tf.global_variables_initializer())
-    
+
     print('Learning Started!')
     start_time = time.time()
-    
+
     cost_collect = np.zeros([len(models), training_epochs])
-    
+
     for i in range(training_epochs):
         for m_idx, m in enumerate(models):
             c, _ = m.train(train_x.values, train_y.values.reshape([-1,1]), learning_rate)
             cost_collect[m_idx, i] = c;
-            
+
     print('Learning Finished!')
     print("--- %.2f seconds ---" %(time.time() - start_time))
-    
+
     fig = plt.figure(figsize=(18, 6))
     for m_idx in range(len(models)):
         fig.add_subplot(len(models) / 5, 5, m_idx+1)
         plt.plot(cost_collect[m_idx])
-    plt.show() 
+    plt.show()
 {% endhighlight %}
 
     Learning Started!
@@ -939,8 +940,8 @@ with tf.variable_scope("submission_model"):
 
 ![png](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model_28_1.png)
 
- 
-## 학습 데이터로 성능평가 
+
+## 학습 데이터로 성능평가
 
 **In [24]:**
 
@@ -972,8 +973,8 @@ print('Ensemble accuracy: %.2f' % sess.run(ensemble_accuracy))
     9 accuracy: 0.85
     Ensemble accuracy: 0.84
 
- 
-## 테스트 데이터로 prediction 
+
+## 테스트 데이터로 prediction
 
 **In [25]:**
 
@@ -1261,7 +1262,7 @@ submission.head()
 {% highlight python linenos %}
 submission.to_csv('submission.csv', index=False)
 {% endhighlight %}
- 
+
 ## kaggle 결과!
 
 ![결과](/assets/images/2018-05-15-kaggle-taitanic-tensorflow-DNN-ensemble-model/김성헌_타이타닉_DNN_Ensemble.png)
